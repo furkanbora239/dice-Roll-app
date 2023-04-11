@@ -3,10 +3,21 @@ import 'package:dice_remix/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
+import 'package:shake/shake.dart';
 
 ValueNotifier isPressed = ValueNotifier([false, false, false]);
+bool vibration = true;
+
+final Uri _url = Uri.parse(
+    'https://doc-hosting.flycricket.io/dice-roller-privacy-policy/297751e0-e537-4bd2-8eef-33213355c340/privacy');
+Future<void> _launchUrl() async {
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
+  }
+}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,14 +71,61 @@ class _diceScreenState extends State<diceScreen> {
   @override
   void initState() {
     diceNumberSum = context.read<pro>().diceList.first;
+    ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
+      // Do stuff on phone shake
+      context.read<pro>().reRollDices();
+      if (vibration) {
+        HapticFeedback.mediumImpact();
+      }
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(
-        child: Text('place holder'),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'haptic feedback',
+                      textAlign: TextAlign.center,
+                    ),
+                    Switch(
+                        value: vibration,
+                        onChanged: (value) {
+                          setState(() {
+                            vibration = value;
+                          });
+                        }),
+                  ],
+                ),
+              ),
+              TextButton(
+                  onPressed: () {
+                    const Duration(milliseconds: 100);
+                    showAboutDialog(
+                        applicationVersion: '2.0.0',
+                        context: context,
+                        applicationName: 'Roll The Dice',
+                        applicationLegalese:
+                            "we do not collect your personal data in any way. this is just a dice rolling application. ",
+                        children: [
+                          TextButton(
+                              onPressed: () => _launchUrl(),
+                              child: const Text(
+                                  'for more about privacy policy look here.'))
+                        ]);
+                  },
+                  child: const Text('More Info')),
+            ],
+          ),
+        ),
       ),
       appBar: AppBar(
         centerTitle: true,
@@ -132,12 +190,18 @@ class _myBottomNavBarState extends State<myBottomNavBar> {
                 onTap: () {
                   setState(() {
                     context.read<pro>().diceAdd();
+                    if (vibration) {
+                      HapticFeedback.lightImpact();
+                    }
                   });
                 },
                 onLongPress: () {
                   setState(() {
                     for (int i = 0; i <= 10; i++) {
                       context.read<pro>().diceAdd();
+                    }
+                    if (vibration) {
+                      HapticFeedback.mediumImpact();
                     }
                   });
                 },
@@ -153,6 +217,9 @@ class _myBottomNavBarState extends State<myBottomNavBar> {
                 onTap: () {
                   setState(() {
                     context.read<pro>().reRollDices();
+                    if (vibration) {
+                      HapticFeedback.lightImpact();
+                    }
                   });
                 },
                 child: Padding(
@@ -180,12 +247,18 @@ class _myBottomNavBarState extends State<myBottomNavBar> {
                 onTap: () {
                   setState(() {
                     context.read<pro>().diceRemove();
+                    if (vibration) {
+                      HapticFeedback.lightImpact();
+                    }
                   });
                 },
                 onLongPress: () {
                   setState(() {
                     for (int i = 0; i <= 10; i++) {
                       context.read<pro>().diceRemove();
+                    }
+                    if (vibration) {
+                      HapticFeedback.mediumImpact();
                     }
                   });
                 },
