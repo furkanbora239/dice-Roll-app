@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:shake/shake.dart';
 
@@ -17,6 +17,16 @@ Future<void> _launchUrl() async {
   if (!await launchUrl(_url)) {
     throw Exception('Could not launch $_url');
   }
+}
+
+Future<void> vibPref(data) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setBool('vib', data);
+}
+
+Future<void> chackVib() async {
+  final prefs = await SharedPreferences.getInstance();
+  vibration = prefs.getBool('vib') ?? true;
 }
 
 void main() {
@@ -70,6 +80,7 @@ class diceScreen extends StatefulWidget {
 class _diceScreenState extends State<diceScreen> {
   @override
   void initState() {
+    chackVib();
     diceNumberSum = context.read<pro>().diceList.first;
     ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
       // Do stuff on phone shake
@@ -101,6 +112,8 @@ class _diceScreenState extends State<diceScreen> {
                         onChanged: (value) {
                           setState(() {
                             vibration = value;
+
+                            vibPref(vibration);
                           });
                         }),
                   ],
