@@ -1,16 +1,16 @@
-# dice_remix
+# Roll the Dice
 
-A new Flutter project.
 
-## Getting Started
+Just a simple dice rolling application. 
+You can roll the dice either by shaking the phone or by using the buttons. 
+Made whit flutter. 
+In this project i mainly worked on button animations.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+I don't know how to minimise the images, but I guess it doesn't matter.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![My project-1](https://user-images.githubusercontent.com/96105426/231328861-5a8d10b2-c337-470a-841a-0ce50cb6f0df.png)
+![My project-2](https://user-images.githubusercontent.com/96105426/231328868-2faa778d-2d3f-4c4b-bf0e-2e9865df9dd3.png)
+![My project-3](https://user-images.githubusercontent.com/96105426/231328873-d4cfd6ba-e6f4-4365-89d8-c15e1941bcec.png)
+![My project-4](https://user-images.githubusercontent.com/96105426/231328877-34fe0c28-1229-4dec-bb1c-775a7a64b71f.png)
+![My project-5](https://user-images.githubusercontent.com/96105426/231328882-c45a8600-bf38-4127-8a61-2a44303c411e.png)
